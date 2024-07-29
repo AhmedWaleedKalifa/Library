@@ -9,7 +9,7 @@
 
 body {
     height: calc(90vh -103px);
-    background: url(./images/6714.jpg)
+    background-image: url(./images/6714.jpg),linear-gradient(to right,#000000bb,#222222bb,#444444bb);
 }
 
 * {
@@ -137,10 +137,10 @@ table {
     letter-spacing: 1px;
     font-size: 0.8rem;
     margin: 65px auto;
-    padding: 30px;
+    padding: 33px;
     border: 3px solid white;
     color: var(--text-color);
-    font-weight: 600;
+    font-weight: 700;
     font-size: 16px;
 }
 
@@ -152,6 +152,7 @@ td,
 th {
     border: 1px solid rgb(190, 190, 190);
     padding: 10px 20px;
+    width: 20ch;
     background-color: rgb(235, 235, 235);
     text-align: center;
 }
