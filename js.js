@@ -62,6 +62,10 @@ createBook.addEventListener("click", () => {
     var numberOfPages = numberOfPagesInput.value;
     var checkedInput = document.querySelector('input[name = "choose"]:checked');
     var doYouReadIt = checkedInput.value;
+    titleInput.value="";
+    authorInput.value="";
+    numberOfPagesInput.value="";
+    checkedInput.value="";
     addBookToLibrary(title, author, numberOfPages, doYouReadIt);
     dialog.close();
     refreshTheDisplay()
