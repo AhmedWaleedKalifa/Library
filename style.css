@@ -80,7 +80,7 @@ form div{
     align-items: center;
 }
 input {
-    font-size: 1.2em;
+    font-size: 1.1em;
     outline: none;
     border-radius: 5px;
     border: 1px solid var(--input-border-color);
@@ -117,8 +117,8 @@ label[for="choose"] {
 
 form button,
 input[type="submit"] {
-    margin: 14px;
-    padding: 14px 42px;
+    margin: 12px;
+    padding: 14px 38px;
     border-radius: 8px;
     border: 0px;
     color: var(--text-color);
