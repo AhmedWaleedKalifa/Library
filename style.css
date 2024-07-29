@@ -9,7 +9,7 @@
 
 body {
     height: calc(90vh -103px);
-    background-image: url(./images/6714.jpg),linear-gradient(to right,#000000bb,#222222bb,#444444bb);
+    background-image: url(./images/6714.jpg);
 }
 
 * {
@@ -20,6 +20,7 @@ body {
 }
 
 .control {
+    z-index: 2;
     text-align: center;
     background-color: var(--secondary-color);
     padding: 20px;
@@ -52,10 +53,18 @@ dialog {
     box-shadow: 2px 2px 6px var(--box-shadow);
     padding: 0;
     text-transform: capitalize;
+    
 }
 
 ::backdrop {
-    background-image: linear-gradient(to right, #000000bb, #000000ee, #2a2a2abb);
+    /* background-image: linear-gradient(to right, #000000bb, #000000ee, #2a2a2abb); */
+        
+    z-index: -1;
+    background-image: url(./images/6714.jpg);
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    height: 100%;
+  
 }
 
 form {
