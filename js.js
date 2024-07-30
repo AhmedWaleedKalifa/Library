@@ -109,6 +109,11 @@ function displayLibrary() {
         td2.textContent = element.author;
         td3.textContent = element.numberOfPages;
         td4.textContent = element.doYouReadIt;
+        if(td4.textContent=="No"){
+            td4.style.color="red";
+        }else{
+            td4.style.color="green"
+        }
         deleteButton.textContent = "DELETE";
         change.textContent = "CHANGE";
         td5.setAttribute("class", "deleteContainer");
@@ -123,6 +128,7 @@ function displayLibrary() {
             saveLibrary();
         });
         change.addEventListener("click", () => {
+            
             if (td4.textContent == "No") {
                 td4.textContent = "Yes";
                 element.doYouReadIt = "Yes";
