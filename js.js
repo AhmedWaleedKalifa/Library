@@ -136,7 +136,3 @@ function displayLibrary() {
     });
 }
 
-// Initial display of the library if there are any books saved
-refreshTheDisplay();
-
-console.log(myLibrary);
