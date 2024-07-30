@@ -1,16 +1,25 @@
-
-
 const table = document.querySelector("table");
 const displayBooks = document.querySelector(".displayBooks");
 const dialog = document.querySelector("dialog");
 const showButton = document.querySelector(".addBook");
-const cancelButton = document.querySelector(".cancel")
-const createBook = document.querySelector(".create")
+const cancelButton = document.querySelector(".cancel");
+const createBook = document.querySelector(".create");
 const titleInput = document.getElementById("title");
 const authorInput = document.getElementById("author");
 const numberOfPagesInput = document.getElementById("numberOfPages");
 
-const myLibrary = [];
+let myLibrary = [];
+
+// Load myLibrary from local storage
+if (localStorage.getItem("myLibrary")) {
+    myLibrary = JSON.parse(localStorage.getItem("myLibrary"));
+}
+
+// Save myLibrary to local storage
+function saveLibrary() {
+    localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
+}
+
 var count = 0;
 
 function Book(title, author, numberOfPages, doYouReadIt) {
@@ -29,7 +38,7 @@ showButton.addEventListener("click", () => {
 cancelButton.addEventListener("click", (e) => {
     e.preventDefault();
     dialog.close();
-})
+});
 
 function refreshTheDisplay() {
     table.innerHTML = `
@@ -42,7 +51,7 @@ function refreshTheDisplay() {
         <th>Delete</th>
         <th>Change</th>
     </thead>
-    `
+    `;
     displayLibrary();
 }
 
@@ -51,30 +60,29 @@ displayBooks.addEventListener("click", () => {
     if (count % 2 != 0) {
         refreshTheDisplay();
     } else {
-        table.innerHTML = ""
+        table.innerHTML = "";
     }
-})
-
+});
 
 createBook.addEventListener("click", () => {
     var title = titleInput.value;
     var author = authorInput.value;
     var numberOfPages = numberOfPagesInput.value;
-    var checkedInput = document.querySelector('input[name = "choose"]:checked');
+    var checkedInput = document.querySelector('input[name="choose"]:checked');
     var doYouReadIt = checkedInput.value;
-    titleInput.value="";
-    authorInput.value="";
-    numberOfPagesInput.value="";
-    checkedInput.value="";
+    titleInput.value = "";
+    authorInput.value = "";
+    numberOfPagesInput.value = "";
+    checkedInput.checked = false;
     addBookToLibrary(title, author, numberOfPages, doYouReadIt);
     dialog.close();
-    refreshTheDisplay()
-})
-
+    refreshTheDisplay();
+    saveLibrary();
+});
 
 function addBookToLibrary(title, author, numberOfPages, doYouReadIt) {
     const newBook = new Book(title, author, numberOfPages, doYouReadIt);
-    myLibrary.push(newBook)
+    myLibrary.push(newBook);
 }
 
 function displayLibrary() {
@@ -106,44 +114,29 @@ function displayLibrary() {
         td5.setAttribute("class", "deleteContainer");
         td6.setAttribute("class", "changeContainer");
 
-        deleteButton.setAttribute("class", "delete")
-        change.setAttribute("class", "change")
+        deleteButton.setAttribute("class", "delete");
+        change.setAttribute("class", "change");
 
         deleteButton.addEventListener("click", () => {
-            myLibrary.splice(book.index, 1)
-            refreshTheDisplay()
-        })
+            myLibrary.splice(element.index, 1);
+            refreshTheDisplay();
+            saveLibrary();
+        });
         change.addEventListener("click", () => {
             if (td4.textContent == "No") {
                 td4.textContent = "Yes";
-                element.doYouReadIt = "Yes"
+                element.doYouReadIt = "Yes";
             } else if (td4.textContent == "Yes") {
                 td4.textContent = "No";
-                element.doYouReadIt = "No"
+                element.doYouReadIt = "No";
             }
-            refreshTheDisplay()
-        })
-    })
-
+            refreshTheDisplay();
+            saveLibrary();
+        });
+    });
 }
 
-
-
-
-
-addBookToLibrary("Pride and Prejudice", "Jane Austen ", 299, "Yes");
-addBookToLibrary("War and Peace", "Leo Tolstoy", 444, "No");
-addBookToLibrary("The Glass Palace", "Amitav Ghosh", 177, "No");
-addBookToLibrary("Q & A", "Vikas Swarup", 97, "Yes");
+// Initial display of the library if there are any books saved
+refreshTheDisplay();
 
 console.log(myLibrary);
-
-
-
-
-
-
-
-
-
-
