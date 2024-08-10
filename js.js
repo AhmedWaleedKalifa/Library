@@ -1,149 +1,158 @@
-const table = document.querySelector("table");
-const displayBooks = document.querySelector(".displayBooks");
-const dialog = document.querySelector("dialog");
-const showButton = document.querySelector(".addBook");
-const cancelButton = document.querySelector(".cancel");
-const createBook = document.querySelector(".create");
-const titleInput = document.getElementById("title");
-const authorInput = document.getElementById("author");
-const numberOfPagesInput = document.getElementById("numberOfPages");
 
-let myLibrary = [];
+class Library {
+    constructor() {
+        this.table = document.querySelector("table");
+        this.displayBooksButton = document.querySelector(".displayBooks");
+        this.dialog = document.querySelector("dialog");
+        this.showButton = document.querySelector(".addBook");
+        this.cancelButton = document.querySelector(".cancel");
+        this.createBookButton = document.querySelector(".create");
+        this.titleInput = document.getElementById("title");
+        this.authorInput = document.getElementById("author");
+        this.numberOfPagesInput = document.getElementById("numberOfPages");
 
-// Load myLibrary from local storage
-if (localStorage.getItem("myLibrary")) {
-    myLibrary = JSON.parse(localStorage.getItem("myLibrary"));
-}
+        this.myLibrary = this.loadLibrary() || [];
+        this.count = 0;
+        this.counter = -1;
 
-// Save myLibrary to local storage
-function saveLibrary() {
-    localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
-}
-
-var count = 0;
-
-function Book(title, author, numberOfPages, doYouReadIt,index) {
-    this.title = title;
-    this.author = author;
-    this.numberOfPages = numberOfPages;
-    this.doYouReadIt = doYouReadIt;
-    this.index = index;
-
-}
-
-showButton.addEventListener("click", () => {
-    dialog.showModal();
-});
-
-cancelButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    dialog.close();
-});
-
-function refreshTheDisplay() {
-    table.innerHTML = `
-    <caption>Books library</caption>
-    <thead>
-        <th>Num</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Number of pages</th>
-        <th>Is any one read book</th>
-        <th>Delete</th>
-        <th>Change</th>
-    </thead>
-    `;
-    displayLibrary();
-}
-
-displayBooks.addEventListener("click", () => {
-    count++;
-    if (count % 2 != 0) {
-        refreshTheDisplay();
-    } else {
-        table.innerHTML = "";
+        this.setupEventListeners();
     }
-});
-   let  counter=-1;
-createBook.addEventListener("click", () => {
-    counter++;
-    var title = titleInput.value;
-    var author = authorInput.value;
-    var numberOfPages = numberOfPagesInput.value;
-    var checkedInput = document.querySelector('input[name="choose"]:checked');
-    var doYouReadIt = checkedInput.value;
-    titleInput.value = "";
-    authorInput.value = "";
-    numberOfPagesInput.value = "";
-    checkedInput.checked = false;
-    addBookToLibrary(title, author, numberOfPages, doYouReadIt,counter);
-    dialog.close();
-    refreshTheDisplay();
-    saveLibrary();
-});
 
-function addBookToLibrary(title, author, numberOfPages, doYouReadIt) {
-    const newBook = new Book(title, author, numberOfPages, doYouReadIt);
-    myLibrary.push(newBook);
-}
+    loadLibrary() {
+        return JSON.parse(localStorage.getItem("myLibrary"));
+    }
 
-function displayLibrary() {
-    myLibrary.forEach(function (element) {
-        const book = document.createElement("tr");
-        table.appendChild(book);
-        const td0=document.createElement("td");
-        const td1 = document.createElement("td");
-        const td2 = document.createElement("td");
-        const td3 = document.createElement("td");
-        const td4 = document.createElement("td");
-        const td5 = document.createElement("td");
-        const td6 = document.createElement("td");
-        const deleteButton = document.createElement("button");
-        const change = document.createElement("button");
-        book.appendChild(td0);
-        book.appendChild(td1);
-        book.appendChild(td2);
-        book.appendChild(td3);
-        book.appendChild(td4);
-        book.appendChild(td5);
-        book.appendChild(td6);
-        td5.appendChild(deleteButton);
-        td6.appendChild(change);
-        td0.textContent=myLibrary.indexOf(element)+1;
-        td1.textContent = element.title;
-        td2.textContent = element.author;
-        td3.textContent = element.numberOfPages;
-        td4.textContent = element.doYouReadIt;
-        if(td4.textContent=="No"){
-            td4.style.color="red";
-        }else{
-            td4.style.color="green"
-        }
-        deleteButton.textContent = "DELETE";
-        change.textContent = "CHANGE";
-        td5.setAttribute("class", "deleteContainer");
-        td6.setAttribute("class", "changeContainer");
+    saveLibrary() {
+        localStorage.setItem("myLibrary", JSON.stringify(this.myLibrary));
+    }
 
-        deleteButton.setAttribute("class", "delete");
-        change.setAttribute("class", "change");
+    addBookToLibrary(title, author, numberOfPages, doYouReadIt, index) {
+        const newBook = new Book(title, author, numberOfPages, doYouReadIt, index);
+        this.myLibrary.push(newBook);
+        this.saveLibrary();
+    }
 
-        deleteButton.addEventListener("click", () => {
-            myLibrary.splice(myLibrary.indexOf(element), 1);
-            refreshTheDisplay();
-            saveLibrary();
+    refreshTheDisplay() {
+        this.table.innerHTML = `
+            <caption>Books library</caption>
+            <thead>
+                <th>Num</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Number of pages</th>
+                <th>Is any one read book</th>
+                <th>Delete</th>
+                <th>Change</th>
+            </thead>
+        `;
+        this.displayLibrary();
+    }
+
+    displayLibrary() {
+            this.myLibrary.forEach((element, index) => {
+            const book = document.createElement("tr");
+            this.table.appendChild(book);
+
+            const td0 = document.createElement("td");
+            const td1 = document.createElement("td");
+            const td2 = document.createElement("td");
+            const td3 = document.createElement("td");
+            const td4 = document.createElement("td");
+            const td5 = document.createElement("td");
+            const td6 = document.createElement("td");
+
+            const deleteButton = document.createElement("button");
+            const changeButton = document.createElement("button");
+
+            td0.textContent = index + 1;
+            td1.textContent = element.title;
+            td2.textContent = element.author;
+            td3.textContent = element.numberOfPages;
+            td4.textContent = element.doYouReadIt;
+
+            td4.style.color = td4.textContent === "No" ? "red" : "green";
+
+            deleteButton.textContent = "DELETE";
+            changeButton.textContent = "CHANGE";
+
+            td5.classList.add("deleteContainer");
+            td6.classList.add("changeContainer");
+
+            deleteButton.classList.add("delete");
+            changeButton.classList.add("change");
+
+            td5.appendChild(deleteButton);
+            td6.appendChild(changeButton);
+
+            book.appendChild(td0);
+            book.appendChild(td1);
+            book.appendChild(td2);
+            book.appendChild(td3);
+            book.appendChild(td4);
+            book.appendChild(td5);
+            book.appendChild(td6);
+
+            deleteButton.addEventListener("click", () => {
+                this.myLibrary.splice(index, 1);
+                this.refreshTheDisplay();
+                this.saveLibrary();
+            });
+
+            changeButton.addEventListener("click", () => {
+                element.doYouReadIt = element.doYouReadIt === "No" ? "Yes" : "No";
+                this.refreshTheDisplay();
+                this.saveLibrary();
+            });
         });
-        change.addEventListener("click", () => {
-            
-            if (td4.textContent == "No") {
-                td4.textContent = "Yes";
-                element.doYouReadIt = "Yes";
-            } else if (td4.textContent == "Yes") {
-                td4.textContent = "No";
-                element.doYouReadIt = "No";
+    }
+
+    setupEventListeners() {
+        this.showButton.addEventListener("click", () => {
+            this.dialog.showModal();
+        });
+
+        this.cancelButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            this.dialog.close();
+        });
+
+        this.displayBooksButton.addEventListener("click", () => {
+            this.count++;
+            if (this.count % 2 !== 0) {
+                this.refreshTheDisplay();
+            } else {
+                this.table.innerHTML = "";
             }
-            refreshTheDisplay();
-            saveLibrary();
         });
-    });
+
+        this.createBookButton.addEventListener("click", () => {
+            this.counter++;
+            const title = this.titleInput.value;
+            const author = this.authorInput.value;
+            const numberOfPages = this.numberOfPagesInput.value;
+            const checkedInput = document.querySelector('input[name="choose"]:checked');
+            const doYouReadIt = checkedInput.value;
+
+            this.titleInput.value = "";
+            this.authorInput.value = "";
+            this.numberOfPagesInput.value = "";
+            checkedInput.checked = false;
+
+            this.addBookToLibrary(title, author, numberOfPages, doYouReadIt, this.counter);
+            this.dialog.close();
+            this.refreshTheDisplay();
+        });
+    }
 }
 
+class Book {
+    constructor(title, author, numberOfPages, doYouReadIt, index) {
+        this.title = title;
+        this.author = author;
+        this.numberOfPages = numberOfPages;
+        this.doYouReadIt = doYouReadIt;
+        this.index = index;
+    }
+}
+
+const myLibraryApp = new Library();
