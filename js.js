@@ -22,13 +22,13 @@ function saveLibrary() {
 
 var count = 0;
 
-function Book(title, author, numberOfPages, doYouReadIt) {
-    let index = myLibrary.length;
+function Book(title, author, numberOfPages, doYouReadIt,index) {
     this.title = title;
     this.author = author;
     this.numberOfPages = numberOfPages;
     this.doYouReadIt = doYouReadIt;
     this.index = index;
+
 }
 
 showButton.addEventListener("click", () => {
@@ -44,6 +44,7 @@ function refreshTheDisplay() {
     table.innerHTML = `
     <caption>Books library</caption>
     <thead>
+        <th>Num</th>
         <th>Title</th>
         <th>Author</th>
         <th>Number of pages</th>
@@ -63,8 +64,9 @@ displayBooks.addEventListener("click", () => {
         table.innerHTML = "";
     }
 });
-
+   let  counter=-1;
 createBook.addEventListener("click", () => {
+    counter++;
     var title = titleInput.value;
     var author = authorInput.value;
     var numberOfPages = numberOfPagesInput.value;
@@ -74,7 +76,7 @@ createBook.addEventListener("click", () => {
     authorInput.value = "";
     numberOfPagesInput.value = "";
     checkedInput.checked = false;
-    addBookToLibrary(title, author, numberOfPages, doYouReadIt);
+    addBookToLibrary(title, author, numberOfPages, doYouReadIt,counter);
     dialog.close();
     refreshTheDisplay();
     saveLibrary();
@@ -89,6 +91,7 @@ function displayLibrary() {
     myLibrary.forEach(function (element) {
         const book = document.createElement("tr");
         table.appendChild(book);
+        const td0=document.createElement("td");
         const td1 = document.createElement("td");
         const td2 = document.createElement("td");
         const td3 = document.createElement("td");
@@ -97,14 +100,16 @@ function displayLibrary() {
         const td6 = document.createElement("td");
         const deleteButton = document.createElement("button");
         const change = document.createElement("button");
-        table.appendChild(td1);
-        table.appendChild(td2);
-        table.appendChild(td3);
-        table.appendChild(td4);
-        table.appendChild(td5);
-        table.appendChild(td6);
+        book.appendChild(td0);
+        book.appendChild(td1);
+        book.appendChild(td2);
+        book.appendChild(td3);
+        book.appendChild(td4);
+        book.appendChild(td5);
+        book.appendChild(td6);
         td5.appendChild(deleteButton);
         td6.appendChild(change);
+        td0.textContent=myLibrary.indexOf(element);
         td1.textContent = element.title;
         td2.textContent = element.author;
         td3.textContent = element.numberOfPages;
@@ -123,7 +128,7 @@ function displayLibrary() {
         change.setAttribute("class", "change");
 
         deleteButton.addEventListener("click", () => {
-            myLibrary.splice(element.index, 1);
+            myLibrary.splice(myLibrary.indexOf(element), 1);
             refreshTheDisplay();
             saveLibrary();
         });

@@ -153,6 +153,7 @@ table {
     font-size: 16px;
 }
 
+
 thead th {
     background-color: var(--input-and-button-color);
     font-weight: 700;
@@ -184,6 +185,7 @@ caption {
     font-size: 36px;
     font-weight: 600;
     color: var(--form-color);
+    
 }
 
 .delete {
@@ -205,7 +207,7 @@ caption {
 .change,
 .delete {
     font-size: 16px;
-    opacity: .6;
+    opacity: .7;
     cursor: pointer;
 }
 
@@ -214,8 +216,8 @@ caption {
     opacity: 1;
 }
 
-table .changeContainer,
-table .deleteContainer {
+table tr .changeContainer,
+table tr .deleteContainer {
     border-right: 3px solid white;
     border-left: 0px solid white;
     border-top: 0px solid white;
