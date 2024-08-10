@@ -109,7 +109,7 @@ function displayLibrary() {
         book.appendChild(td6);
         td5.appendChild(deleteButton);
         td6.appendChild(change);
-        td0.textContent=myLibrary.indexOf(element);
+        td0.textContent=myLibrary.indexOf(element)+1;
         td1.textContent = element.title;
         td2.textContent = element.author;
         td3.textContent = element.numberOfPages;
